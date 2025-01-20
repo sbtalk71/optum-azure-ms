@@ -1,18 +1,36 @@
 package com.demo.spring.dao;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="INVENTORY")
 public class Inventory {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name="PRODUCT_ID")
 	private String productId;
+	
+	@Column(name="PRODUCT_NAME")
 	private String productName;
+	
 	private int stock;
+	
+	@Column(name="UNIT_PRICE")
 	private double price;
 
 	public Inventory() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Inventory(Long id, String productId, String productName, int stock, double price) {
-		this.id = id;
+	public Inventory(String productId, String productName, int stock, double price) {
 		this.productId = productId;
 		this.productName = productName;
 		this.stock = stock;
