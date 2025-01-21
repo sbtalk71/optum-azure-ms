@@ -24,6 +24,7 @@ public class InventoryService {
 	}
 
 	public Inventory saveToInventory(Inventory inventory) {
+		
 		if (inventoryRepository.findByProductId(inventory.getProductId()).isEmpty()) {
 
 			return inventoryRepository.save(inventory);
@@ -34,7 +35,7 @@ public class InventoryService {
 	}
 
 	public Inventory updateInventory(Inventory inventory) {
-		if (inventoryRepository.existsById(inventory.getId())) {
+		if (inventoryRepository.findByProductId(inventory.getProductId()).isPresent()) {
 			return inventoryRepository.save(inventory);
 
 		} else {
