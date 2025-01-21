@@ -50,8 +50,11 @@ public class InventoryController {
 		return ResponseEntity.ok(inventoryService.updateInventory(inventory));
 	}
 	
-	
-	
+	@GetMapping(path="/{productId}/{qty}", produces = MediaType.TEXT_PLAIN_VALUE)
+	public ResponseEntity<String> updateProduct(@PathVariable String productId, @PathVariable int qty){
+		
+		return ResponseEntity.ok(inventoryService.updateProducts(productId,qty));
+	}
 	
 	
 	

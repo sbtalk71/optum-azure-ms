@@ -1,8 +1,10 @@
 package com.demo.spring.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.demo.spring.dao.Inventory;
@@ -24,7 +26,7 @@ public class InventoryService {
 	}
 
 	public Inventory saveToInventory(Inventory inventory) {
-		
+
 		if (inventoryRepository.findByProductId(inventory.getProductId()).isEmpty()) {
 
 			return inventoryRepository.save(inventory);
@@ -35,11 +37,17 @@ public class InventoryService {
 	}
 
 	public Inventory updateInventory(Inventory inventory) {
-		if (inventoryRepository.findByProductId(inventory.getProductId()).isPresent()) {
-			return inventoryRepository.save(inventory);
+
+		Optional<Inventory> invOp = inventoryRepository.findByProductId(inventory.getProductId());
+
+		if (invOp.isPresent()) {
+
+			Inventory existingInventory = invOp.get();
+			existingInventory.setStock(inventory.getStock());
+			return inventoryRepository.save(existingInventory);
 
 		} else {
-			throw new RuntimeException("Inventory does not exist");
+			throw new ProductNotFoundException("Not Found");
 		}
 	}
 
@@ -54,5 +62,22 @@ public class InventoryService {
 
 	public Inventory findInventoryByProductId(String productId) {
 		return inventoryRepository.findByProductId(productId).orElseThrow(() -> new RuntimeException("Not Found"));
+	}
+
+	public String updateProducts(String productId, int qty) {
+
+		Optional<Inventory> invOp = inventoryRepository.findByProductId(productId);
+
+		if (invOp.isPresent()) {
+
+			Inventory existingInventory = invOp.get();
+			existingInventory.setStock(existingInventory.getStock() - qty);
+			inventoryRepository.save(existingInventory);
+			return "UPDATED";
+
+		} else {
+			return "FAILED";
+		}
+
 	}
 }
