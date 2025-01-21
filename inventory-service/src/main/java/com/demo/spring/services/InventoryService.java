@@ -24,11 +24,12 @@ public class InventoryService {
 	}
 
 	public Inventory saveToInventory(Inventory inventory) {
-		if (inventoryRepository.existsById(inventory.getId())) {
+		if (inventoryRepository.findByProductId(inventory.getProductId()).isEmpty()) {
 
-			throw new RuntimeException("Inventory exists");
-		} else {
 			return inventoryRepository.save(inventory);
+
+		} else {
+			throw new RuntimeException("Inventory exists");
 		}
 	}
 
@@ -48,5 +49,9 @@ public class InventoryService {
 		} else {
 			throw new RuntimeException("Inventory does not exist");
 		}
+	}
+
+	public Inventory findInventoryByProductId(String productId) {
+		return inventoryRepository.findByProductId(productId).orElseThrow(() -> new RuntimeException("Not Found"));
 	}
 }
