@@ -9,8 +9,8 @@ import com.demo.spring.exceptions.OrderExistsException;
 @RestControllerAdvice
 public class OrdersExceptionHandler {
 
-	@ExceptionHandler(OrderExistsException.class)
-	public ResponseEntity<String> handleExceptions(OrderExistsException ex){
+	@ExceptionHandler(RuntimeException.class)
+	public ResponseEntity<String> handleExceptions(RuntimeException ex){
 		String msg="""
 				{
 				"message":%s
