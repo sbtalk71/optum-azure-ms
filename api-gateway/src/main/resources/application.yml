@@ -6,7 +6,6 @@ spring:
 
   cloud:
     gateway:
-      mvc:
         routes:
         - id: order-service
           uri: lb://order-service
@@ -21,6 +20,14 @@ spring:
         - id: google-test
           uri: http://www.google.co.in
           predicates:
-           - Path=/redirect/**				 
+           - Path=/redirect/**
 
-#		http://localhost:9090/redirect/ --->http://www.google.co.in	 				 				 
+
+#http://localhost:9090/redirect/ --->http://www.google.co.in
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url: 
+      defaultZone: http://localhost:8761/eureka/
