@@ -19,8 +19,8 @@ public class OrderServiceApplication {
 	
 	@Bean
 	@LoadBalanced
-	public RestClient restClient() {
-		return RestClient.create();
+	public RestClient.Builder restClient() {
+		return RestClient.builder();
 	}
 	
 	@Bean

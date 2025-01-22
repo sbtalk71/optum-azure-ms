@@ -22,7 +22,8 @@ public class OrderController {
 	OrderService orderService;
 
 	@Autowired
-	RestClient restClient;
+	RestClient.Builder builder;
+	
 	@Autowired
 	RestTemplate restTemplate;
 	
@@ -31,7 +32,7 @@ public class OrderController {
 	public ResponseEntity<Order> createOrder(@RequestBody Order order) {
 
 		// update product inventory
-		String updateResponse = restClient.get()
+		String updateResponse = builder.build().get()
 				.uri("http://inventory-service/inventory/" + order.getProductId() + "/" + order.getQuantity() + "")
 				.accept(MediaType.TEXT_PLAIN).retrieve().body(String.class);
 
@@ -45,6 +46,11 @@ public class OrderController {
 	}
 	@GetMapping(path="/catalogue", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity getCatalogue() {
-		return ResponseEntity.ok(restTemplate.getForObject("http://inventory-service/inventory", String.class));
+		//return ResponseEntity.ok(restTemplate.getForObject("http://inventory-service/inventory", String.class));
+		return ResponseEntity.ok(builder.build()
+				.get().uri("http://inventory-service/inventory")
+				.accept(MediaType.APPLICATION_JSON)
+				.retrieve()
+				.body(String.class));
 	}
 }
