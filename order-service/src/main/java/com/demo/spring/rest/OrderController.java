@@ -14,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 import com.demo.spring.dao.Order;
 import com.demo.spring.services.OrderService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
@@ -45,6 +47,7 @@ public class OrderController {
 
 	}
 	@GetMapping(path="/catalogue", produces = MediaType.APPLICATION_JSON_VALUE)
+	@CircuitBreaker(name="orderBackend",fallbackMethod ="getCatalogueFallback" )
 	public ResponseEntity getCatalogue() {
 		//return ResponseEntity.ok(restTemplate.getForObject("http://inventory-service/inventory", String.class));
 		return ResponseEntity.ok(builder.build()
@@ -52,5 +55,15 @@ public class OrderController {
 				.accept(MediaType.APPLICATION_JSON)
 				.retrieve()
 				.body(String.class));
+	}
+	
+	public ResponseEntity<String> getCatalogueFallback(Throwable t){
+		String msg="""
+				{
+				"message":%s
+				}
+				""";
+		String resp=String.format(msg, "Service Unavailable ");
+		return ResponseEntity.ok(resp);
 	}
 }
