@@ -6,6 +6,7 @@ spring:
 
   cloud:
     gateway:
+       mvc:
         routes:
         - id: order-service
           uri: lb://order-service

@@ -17,7 +17,7 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain config(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(sec->sec.requestMatchers("/order/**").hasRole("USER")
+		http.authorizeHttpRequests(sec->sec.requestMatchers("/orders/**").hasRole("USER")
 				.requestMatchers("/inventory/**").hasRole("ADMIN").anyRequest().permitAll());
 		
 		http.httpBasic(Customizer.withDefaults()).csrf(Customizer.withDefaults());
