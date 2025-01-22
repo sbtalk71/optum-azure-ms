@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,8 @@ import com.demo.spring.dao.Order;
 import com.demo.spring.services.OrderService;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.annotation.Timed;
 
 @RestController
 @RequestMapping("/orders")
@@ -48,6 +51,7 @@ public class OrderController {
 	}
 	@GetMapping(path="/catalogue", produces = MediaType.APPLICATION_JSON_VALUE)
 	@CircuitBreaker(name="orderBackend",fallbackMethod ="getCatalogueFallback" )
+	
 	public ResponseEntity getCatalogue() {
 		//return ResponseEntity.ok(restTemplate.getForObject("http://inventory-service/inventory", String.class));
 		return ResponseEntity.ok(builder.build()
@@ -65,5 +69,10 @@ public class OrderController {
 				""";
 		String resp=String.format(msg, "Service Unavailable ");
 		return ResponseEntity.ok(resp);
+	}
+	
+	@GetMapping(path="/{id}")
+	public ResponseEntity<Order> findById(@PathVariable String id){
+		return ResponseEntity.ok(orderService.getOrderById(id));
 	}
 }

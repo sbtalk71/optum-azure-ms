@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableDiscoveryClient
+
 public class OrderServiceApplication {
 
 	public static void main(String[] args) {

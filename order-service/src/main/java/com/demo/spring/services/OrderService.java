@@ -10,6 +10,9 @@ import com.demo.spring.dao.OrderRepository;
 import com.demo.spring.exceptions.OrderExistsException;
 import com.demo.spring.exceptions.OrderNotFoundException;
 
+import io.micrometer.core.annotation.Counted;
+import io.micrometer.core.annotation.Timed;
+
 @Service
 public class OrderService {
 
@@ -20,6 +23,8 @@ public class OrderService {
 		return orderRepository.findAll();
 	}
 	
+	@Timed("orders.catalogue")
+	@Counted("orders.catalogue.count")
 	public Order getOrderById(String orderId) {
 		return orderRepository.findByOrderId(orderId).orElseThrow(()->new OrderNotFoundException("Order Not Found with id "+orderId));
 	}
