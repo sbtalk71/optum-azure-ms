@@ -15,6 +15,7 @@ public class EventStoreListener {
 
     @KafkaListener(topics = "product-events", groupId = "inventory-group")
     public void listen(Event event) {
+    	System.out.println("Product Event received...");
         if (event instanceof ProductCreatedEvent) {
             ProductCreatedEvent productEvent = (ProductCreatedEvent) event;
             Product product = new Product(productEvent.getProductId(), productEvent.getName(), 0);

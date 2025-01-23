@@ -12,7 +12,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
   datasource:
-    url: jdbc:mariadb://localhost:3306/eventsourcing
+    url: jdbc:mariadb://localhost:3306/ordersdb
     username: root
     password: root
   jpa:

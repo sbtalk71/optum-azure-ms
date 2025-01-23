@@ -19,4 +19,10 @@ public class OrderCreatedEvent implements DomainEvent {
     public String getEventType() {
         return "OrderCreated";
     }
+    
+    @Override
+    public Instant getTimestamp() {
+    	// TODO Auto-generated method stub
+    	return Instant.now();
+    }
 }
